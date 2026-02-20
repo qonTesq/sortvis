@@ -1,0 +1,41 @@
+<script lang="ts">
+	import { visualizer } from '$state';
+	import { Button } from '$components/ui/button';
+	import { Separator } from '$components/ui/separator';
+	import { Sun, Moon } from '@lucide/svelte';
+	import { toggleMode } from 'mode-watcher';
+</script>
+
+<div class="hidden h-full w-full items-center justify-between pl-4 sm:flex">
+	<!-- Left: Logo & Description -->
+	<div class="flex items-center">
+		<h1
+			class="flex -translate-y-0.5 items-center text-xl font-bold tracking-tight"
+			aria-label="Sortvis Home"
+		>
+			sortvis
+		</h1>
+		<!-- Vertical Separator -->
+		<Separator orientation="vertical" class="mx-4 h-5" />
+	</div>
+
+	<!-- Center: Description -->
+	<div class="flex flex-1 items-center overflow-hidden">
+		<p class="truncate text-xs text-muted-foreground">
+			{visualizer.currentAlgorithmMetadata.description}
+		</p>
+	</div>
+
+	<!-- Right: Theme Toggle -->
+	<Button
+		onclick={toggleMode}
+		variant="outline"
+		size="icon"
+		class="mr-4 text-muted-foreground"
+		aria-label="Toggle theme"
+	>
+		<Sun class="size-4 scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90!" />
+		<Moon class="absolute size-4 scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0!" />
+		<span class="sr-only">Toggle theme</span>
+	</Button>
+</div>
