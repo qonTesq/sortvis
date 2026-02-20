@@ -7,32 +7,17 @@ export function* selectionSort(arr: number[]): Generator<SortStep, void, undefin
 		let minIdx = i;
 
 		for (let j = i + 1; j < n; j++) {
-			yield {
-				type: 'compare',
-				indices: [minIdx, j]
-			};
-
-			if (arr[j]! < arr[minIdx]!) {
-				minIdx = j;
-			}
+			yield { type: 'compare', indices: [minIdx, j] };
+			if (arr[j]! < arr[minIdx]!) minIdx = j;
 		}
 
 		if (minIdx !== i) {
 			[arr[i], arr[minIdx]] = [arr[minIdx]!, arr[i]!];
-			yield {
-				type: 'swap',
-				indices: [i, minIdx]
-			};
+			yield { type: 'swap', indices: [i, minIdx] };
 		}
 
-		yield {
-			type: 'sorted',
-			indices: [i]
-		};
+		yield { type: 'sorted', indices: [i] };
 	}
 
-	yield {
-		type: 'sorted',
-		indices: [n - 1]
-	};
+	yield { type: 'sorted', indices: [n - 1] };
 }

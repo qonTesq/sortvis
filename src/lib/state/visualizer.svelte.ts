@@ -50,7 +50,7 @@ export class VisualizerState {
 	// --- Internal State ---
 	private generator: Generator<SortStep, void, undefined> | null = null;
 	private loopTimeoutId: ReturnType<typeof setTimeout> | null = null;
-	private dirtyIndices = new Set<number>();
+	private dirtyIndices = new Map<number, BarState>();
 
 	constructor() {
 		this.generateArray();
@@ -125,6 +125,14 @@ export class VisualizerState {
 		}
 	}
 
+	private setColor(index: number, state: BarState) {
+		// Only save the previous state if it's not already in the dirty map for this frame step
+		if (!this.dirtyIndices.has(index)) {
+			this.dirtyIndices.set(index, this.colors[index]!);
+		}
+		this.colors[index] = state;
+	}
+
 	// --- The Engine ---
 	private step(): boolean {
 		if (!this.generator) return false;
@@ -133,50 +141,48 @@ export class VisualizerState {
 
 		if (result.done) {
 			this.status = 'finished';
-			// Sync final stats before finishing
 			this.stats = { comparisons: this._comparisons, swaps: this._swaps };
-			// Mark all as sorted
-			this.colors = Array(this.size).fill('sorted');
 			this.dirtyIndices.clear();
 			this.tick++;
 			return false;
 		}
 
-		// Reset only dirty indices from previous step
-		for (const index of this.dirtyIndices) {
-			if (this.colors[index] !== 'sorted') {
-				this.colors[index] = 'default';
-			}
+		for (const [index, prevState] of this.dirtyIndices) {
+			if (this.colors[index] !== 'sorted') this.colors[index] = prevState;
 		}
 		this.dirtyIndices.clear();
 
-		const stepData = result.value;
+		const { type, indices } = result.value;
 
-		if (stepData.type === 'compare') {
-			this.colors[stepData.indices[0]] = 'comparing';
-			this.colors[stepData.indices[1]] = 'comparing';
-			this.dirtyIndices.add(stepData.indices[0]);
-			this.dirtyIndices.add(stepData.indices[1]);
-			this._comparisons++;
-		} else if (stepData.type === 'swap') {
-			this.colors[stepData.indices[0]] = 'swapping';
-			this.colors[stepData.indices[1]] = 'swapping';
-			this.dirtyIndices.add(stepData.indices[0]);
-			this.dirtyIndices.add(stepData.indices[1]);
-			this._swaps++;
-		} else if (stepData.type === 'pivot') {
-			this.colors[stepData.indices[0]] = 'pivot';
-			this.dirtyIndices.add(stepData.indices[0]);
-		} else if (stepData.type === 'sorted') {
-			for (const idx of stepData.indices) {
-				this.colors[idx] = 'sorted';
-				// Sorted indices don't need to be in dirtyIndices because we don't want to reset them to default
-			}
-		} else if (stepData.type === 'merge') {
-			this.colors[stepData.indices[0]] = 'merge';
-			this.array[stepData.indices[0]] = stepData.value;
-			this.dirtyIndices.add(stepData.indices[0]);
-			this._swaps++;
+		switch (type) {
+			case 'compare':
+				this.setColor(indices[0], 'comparing');
+				this.setColor(indices[1], 'comparing');
+				this._comparisons++;
+				break;
+			case 'swap':
+				[this.colors[indices[0]], this.colors[indices[1]]] = [
+					this.colors[indices[1]]!,
+					this.colors[indices[0]]!
+				];
+				this.setColor(indices[0], 'swapping');
+				this.setColor(indices[1], 'swapping');
+				this._swaps++;
+				break;
+			case 'pivot':
+				this.setColor(indices[0], 'pivot');
+				break;
+			case 'sorted':
+				for (const idx of indices) {
+					this.colors[idx] = 'sorted';
+					this.dirtyIndices.delete(idx);
+				}
+				break;
+			case 'merge':
+				this.setColor(indices[0], 'merge');
+				this.array[indices[0]] = result.value.value;
+				this._swaps++;
+				break;
 		}
 
 		return true;
@@ -187,11 +193,7 @@ export class VisualizerState {
 
 		// Grab the current speed config based on the discrete setting
 		const { delay, batch } = SPEED_CONFIG[this.speed];
-
-		for (let i = 0; i < batch; i++) {
-			const shouldContinue = this.step();
-			if (!shouldContinue) break;
-		}
+		for (let i = 0; i < batch && this.step(); i++);
 
 		if (this.status === 'playing') {
 			// Sync internal counters to reactive $state once per batch (not once per step)
@@ -203,9 +205,7 @@ export class VisualizerState {
 	}
 	// --- Derived State ---
 	get currentAlgorithmMetadata() {
-		const meta = algorithmMetadata.find((a) => a.id === this.algorithmId);
-		if (!meta) return algorithmMetadata[0]!;
-		return meta;
+		return algorithmMetadata.find((a) => a.id === this.algorithmId) || algorithmMetadata[0]!;
 	}
 }
 

@@ -19,10 +19,7 @@ export interface BarLayout {
 export function computeLayout(width: number, height: number, array: number[]): BarLayout {
 	const size = array.length;
 
-	let maxValue = 1;
-	for (let i = 0; i < array.length; i++) {
-		if (array[i]! > maxValue) maxValue = array[i]!;
-	}
+	const maxValue = array.length ? Math.max(...array) : 1;
 
 	const step = width / size;
 	// 1 physical pixel gap when bars are wide enough (> 6px physical)
@@ -46,23 +43,19 @@ export function drawAllBars(
 	const batches: Record<string, Path2D> = {};
 
 	for (let i = 0; i < size; i++) {
-		const value = array[i] ?? 0;
-		const state = colors[i] || 'default';
-		const color = themeColors[state];
+		const value = array[i]!;
+		const color = themeColors[colors[i] || 'default'];
 
-		if (!batches[color]) {
-			batches[color] = new Path2D();
-		}
+		batches[color] ??= new Path2D();
 
-		// Height scaling needs dpr-aware offset? No, height is physical.
-		// MIN_BAR_HEIGHT_OFFSET is arbitrary constant, 10px physical is fine at high DPI.
 		const barHeight = ((value / layout.maxValue) * (height - CONFIG.MIN_BAR_HEIGHT_OFFSET)) | 0;
-		const y = (height - barHeight) | 0;
 		const x0 = (i * layout.step) | 0;
-		const x1 = ((i + 1) * layout.step) | 0;
-		const barWidth = x1 - x0 - layout.gap;
-
-		batches[color]!.rect(x0, y, barWidth, barHeight);
+		batches[color].rect(
+			x0,
+			height - barHeight,
+			(((i + 1) * layout.step) | 0) - x0 - layout.gap,
+			barHeight
+		);
 	}
 
 	for (const [color, path] of Object.entries(batches)) {
@@ -82,24 +75,17 @@ export function drawBarsByIndex(
 	colors: BarState[],
 	themeColors: Record<BarState, string>
 ) {
-	for (let j = 0; j < indices.length; j++) {
-		const i = indices[j]!;
-		const value = array[i] ?? 0;
-		const state = colors[i] || 'default';
-		const color = themeColors[state];
+	for (const i of indices) {
+		const value = array[i]!;
+		const color = themeColors[colors[i] || 'default'];
 
 		const barHeight =
 			((value / layout.maxValue) * (layout.height - CONFIG.MIN_BAR_HEIGHT_OFFSET)) | 0;
-		const y = (layout.height - barHeight) | 0;
 		const x0 = (i * layout.step) | 0;
 		const x1 = ((i + 1) * layout.step) | 0;
-		const barWidth = x1 - x0 - layout.gap;
 
-		// Clear the full physical column width
 		ctx.clearRect(x0, 0, x1 - x0, layout.height);
-
-		// Redraw just the bar (gap stays cleared)
 		ctx.fillStyle = color;
-		ctx.fillRect(x0, y, barWidth, barHeight);
+		ctx.fillRect(x0, layout.height - barHeight, x1 - x0 - layout.gap, barHeight);
 	}
 }

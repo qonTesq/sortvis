@@ -17,15 +17,10 @@ export function* bubbleSort(arr: number[]): Generator<SortStep, void, undefined>
 			}
 		}
 
-		// Mark everything from newBound+1 to bound as sorted
-		const sortedIndices = Array.from({ length: bound - newBound }, (_, idx) => newBound + 1 + idx);
-		if (sortedIndices.length > 0) {
-			yield { type: 'sorted', indices: sortedIndices };
-		}
-
+		const sortedIndices = Array.from({ length: bound - newBound }, (_, i) => newBound + 1 + i);
+		if (sortedIndices.length) yield { type: 'sorted', indices: sortedIndices };
 		bound = newBound;
 	}
 
-	// Mark element 0 as sorted — last remaining element
 	yield { type: 'sorted', indices: [0] };
 }

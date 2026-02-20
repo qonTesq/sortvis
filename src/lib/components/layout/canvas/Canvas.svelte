@@ -63,9 +63,7 @@
 				// Diff against what was last drawn to find changed bars
 				const changed: number[] = [];
 				for (let i = 0; i < array.length; i++) {
-					if (colors[i] !== prevColors[i] || array[i] !== prevArray[i]) {
-						changed.push(i);
-					}
+					if (colors[i] !== prevColors[i] || array[i] !== prevArray[i]) changed.push(i);
 				}
 
 				if (changed.length === 0) return; // Nothing changed
@@ -103,9 +101,7 @@
 		}
 
 		function startLoop() {
-			if (rafId === null) {
-				loop();
-			}
+			if (rafId === null) loop();
 		}
 
 		// Initial Setup
@@ -114,10 +110,9 @@
 
 		// Observers
 		const resizeObserver = new ResizeObserver((entries) => {
-			const entry = entries[0];
-			if (!entry) return;
+			if (!entries[0]) return;
 
-			const { width, height } = entry.contentRect;
+			const { width, height } = entries[0].contentRect;
 			canvas.width = width * dpr;
 			canvas.height = height * dpr;
 			// No setTransform — we draw in physical pixels directly
