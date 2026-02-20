@@ -13,7 +13,7 @@ export const algorithmMetadata: AlgorithmInfo[] = [
 	{
 		id: 'quick',
 		name: 'Quick Sort',
-		minTimeComplexity: 'O(n)',
+		minTimeComplexity: 'O(n log n)',
 		maxTimeComplexity: 'O(n²)',
 		spaceComplexity: 'O(log n)',
 		stable: false,
