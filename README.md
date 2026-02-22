@@ -24,21 +24,21 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
 ### Installation
 
 1. Clone the repository:
-   ```pwsh
+   ```bash
    git clone https://github.com/qonTesq/sortvis.git
    ```
 2. Navigate to the project directory:
-   ```pwsh
+   ```bash
    cd sortvis
    ```
 3. Install dependencies using your preferred package manager (e.g., bun, pnpm, npm):
-   ```pwsh
+   ```bash
    bun install
    ```
-   ```pwsh
+   ```bash
    pnpm install
    ```
-   ```pwsh
+   ```bash
    npm install
    ```
    _Note: This project utilizes a `bun.lock` file, meaning [Bun](https://bun.sh) is the natively used package manager._
@@ -47,7 +47,7 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
 
 Start the development server:
 
-```pwsh
+```bash
 bun dev
 ```
 
@@ -57,7 +57,7 @@ Open your browser and navigate to `http://localhost:5173`.
 
 To create a production version:
 
-```pwsh
+```bash
 bun run build
 ```
 
@@ -67,13 +67,13 @@ You can preview the production build locally with `bun run preview`. Then open `
 
 To automatically format your code:
 
-```pwsh
+```bash
 bun run format
 ```
 
 To check for syntax or stylistic issues using ESLint and Prettier:
 
-```pwsh
+```bash
 bun run lint
 ```
 
