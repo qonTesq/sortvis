@@ -11,7 +11,7 @@
 <div class="flex h-dvh w-full flex-col overflow-hidden bg-background font-sans text-foreground">
 	<Header />
 
-	<main class="relative min-h-0 w-full flex-1 pt-5">
+	<div class="relative min-h-0 w-full flex-1 pt-5">
 		<Legend />
 
 		<div
@@ -29,7 +29,7 @@
 		<div class="relative z-10 h-full w-full px-1">
 			<Canvas />
 		</div>
-	</main>
+	</div>
 
 	{#if !isMobile.current}
 		<Stats />
