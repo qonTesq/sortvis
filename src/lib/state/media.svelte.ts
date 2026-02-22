@@ -1,3 +1,3 @@
 import { MediaQuery } from 'svelte/reactivity';
 
-export const isMobile = new MediaQuery('(max-width: 640px)');
+export const isMobile = new MediaQuery('(max-width: 767px)');

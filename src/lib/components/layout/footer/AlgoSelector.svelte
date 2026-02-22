@@ -36,14 +36,14 @@
 					aria-label="Select algorithm"
 					aria-expanded={open}
 					{...props}
-					class={cn('w-[440px] justify-between', props.class as string)}
+					class={cn('w-full justify-between')}
 				>
 					{selectedLabel}
 					<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			{/snippet}
 		</Popover.Trigger>
-		<Popover.Content class="w-[440px] p-0" align="center">
+		<Popover.Content class="w-[220px] p-0" align="center">
 			<Command.Root>
 				<Command.Input placeholder="Search algorithm..." class="h-9" />
 				<Command.List>
