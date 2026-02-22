@@ -7,29 +7,21 @@
 	import { Button } from '$components/ui/button/index.js';
 	import { Check, ChevronsUpDown } from '@lucide/svelte';
 	import { cn } from '$lib/utils.js';
+	import { algorithmMetadata } from '$config/algorithms';
 
-	type AlgoItem = {
-		value: string;
-		label: string;
-	};
-
-	const algorithms: AlgoItem[] = [
-		{ value: 'bubble', label: 'Bubble' },
-		{ value: 'quick', label: 'Quick' },
-		{ value: 'merge', label: 'Merge' },
-		{ value: 'heap', label: 'Heap' },
-		{ value: 'insertion', label: 'Insertion' },
-		{ value: 'selection', label: 'Selection' }
-	];
+	const algorithms = algorithmMetadata.map((a) => ({
+		value: a.id,
+		label: a.name.replace(' Sort', '')
+	}));
 
 	let open = $state(false);
 
-	function handleSelect(value: string) {
+	const handleSelect = (value: string) => {
 		visualizer.setAlgorithm(value);
 		open = false;
-	}
+	};
 
-	let selectedLabel = $derived(
+	const selectedLabel = $derived(
 		algorithms.find((a) => a.value === visualizer.algorithmId)?.label ?? 'Select algorithm...'
 	);
 </script>

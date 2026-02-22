@@ -9,7 +9,7 @@
 	import { toggleMode } from 'mode-watcher';
 
 	const speedLevels: SpeedLevel[] = ['snail', 'slow', 'med', 'fast', 'rapid', 'flash'];
-	let currentSpeedIndex = $derived(speedLevels.indexOf(visualizer.speed));
+	const currentSpeedIndex = $derived(speedLevels.indexOf(visualizer.speed));
 </script>
 
 <div

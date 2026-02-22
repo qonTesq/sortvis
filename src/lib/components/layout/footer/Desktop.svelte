@@ -8,7 +8,7 @@
 	import { RotateCcw, Play, Pause, Shuffle } from '@lucide/svelte';
 
 	const speedLevels: SpeedLevel[] = ['snail', 'slow', 'med', 'fast', 'rapid', 'flash'];
-	let currentSpeedIndex = $derived(speedLevels.indexOf(visualizer.speed));
+	const currentSpeedIndex = $derived(speedLevels.indexOf(visualizer.speed));
 </script>
 
 <div class="flex h-20 w-full flex-row items-center justify-between gap-6 px-4">
