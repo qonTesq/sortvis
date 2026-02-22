@@ -1,9 +1,14 @@
 <script lang="ts">
-	import Desktop from './Desktop.svelte';
-	import Mobile from './Mobile.svelte';
+	import Desktop from './DesktopFooter.svelte';
+	import Mobile from './MobileFooter.svelte';
+
+	import { isMobile } from '$state/media.svelte';
 </script>
 
-<header class="z-20 h-14 w-full bg-background sm:border-b sm:border-border">
-	<Mobile />
-	<Desktop />
+<header class="z-20 h-14 w-full">
+	{#if isMobile.current}
+		<Mobile />
+	{:else}
+		<Desktop />
+	{/if}
 </header>

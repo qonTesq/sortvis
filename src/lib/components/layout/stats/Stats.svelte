@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Desktop from './Desktop.svelte';
-	import Mobile from './Mobile.svelte';
+	import Desktop from './DesktopStats.svelte';
+	import Mobile from './MobileStats.svelte';
 	import { isMobile } from '$state/media.svelte';
 </script>
 

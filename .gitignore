@@ -49,3 +49,6 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
+.agent
+.agents
+skills-lock.json

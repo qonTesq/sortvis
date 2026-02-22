@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MobileFooter from './Mobile.svelte';
-	import DesktopFooter from './Desktop.svelte';
+	import MobileFooter from './MobileFooter.svelte';
+	import DesktopFooter from './DesktopFooter.svelte';
 	import { isMobile } from '$state/media.svelte';
 </script>
 

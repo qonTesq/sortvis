@@ -6,7 +6,7 @@
 	import { toggleMode } from 'mode-watcher';
 </script>
 
-<div class="hidden h-full w-full items-center justify-between pl-4 sm:flex">
+<div class="flex h-full w-full items-center justify-between border-b border-border pl-4">
 	<!-- Left: Logo & Description -->
 	<div class="flex items-center">
 		<h1
