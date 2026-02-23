@@ -1,6 +1,6 @@
 import type { SortStep } from '$types/algorithm';
 
-function* siftDown(arr: number[], n: number, i: number): Generator<SortStep, void, undefined> {
+function* siftDown(arr: Uint8Array, n: number, i: number): Generator<SortStep, void, undefined> {
 	while (true) {
 		let largest = i;
 		const l = 2 * i + 1;
@@ -24,7 +24,7 @@ function* siftDown(arr: number[], n: number, i: number): Generator<SortStep, voi
 	}
 }
 
-export function* heapSort(arr: number[]): Generator<SortStep, void, undefined> {
+export function* heapSort(arr: Uint8Array): Generator<SortStep, void, undefined> {
 	const n = arr.length;
 
 	for (let i = Math.floor(n / 2) - 1; i >= 0; i--) yield* siftDown(arr, n, i);

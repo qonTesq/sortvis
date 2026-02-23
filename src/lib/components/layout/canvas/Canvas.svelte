@@ -16,9 +16,9 @@
 		// Cached layout from last full draw — reused for partial draws
 		let cachedLayout: BarLayout | null = null;
 
-		// Snapshots of what was last drawn — used for diffing
-		let prevColors: BarState[] = [];
-		let prevArray: number[] = [];
+		// Snapshots of what was last drawn — used for diffing (Uint8Array for memcpy-speed copies)
+		let prevColors: Uint8Array = new Uint8Array(0);
+		let prevArray: Uint8Array = new Uint8Array(0);
 
 		let themeColors: Record<BarState, string> = {
 			default: '',
@@ -115,7 +115,6 @@
 			const { width, height } = entries[0].contentRect;
 			canvas.width = width * dpr;
 			canvas.height = height * dpr;
-			// No setTransform — we draw in physical pixels directly
 
 			// Draw immediately to avoid blank flash — don't wait for next RAF
 			fullRedraw = true;

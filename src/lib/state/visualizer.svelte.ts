@@ -1,4 +1,5 @@
 import type { SortStep, SortStatistics, BarState, SpeedLevel } from '$types';
+import { BAR_STATE_ID } from '$types';
 import {
 	bubbleSort,
 	quickSort,
@@ -9,7 +10,7 @@ import {
 } from '$lib/algorithms';
 import { algorithmMetadata } from '$config/algorithms';
 
-const ALGORITHMS: Record<string, (arr: number[]) => Generator<SortStep, void, undefined>> = {
+const ALGORITHMS: Record<string, (arr: Uint8Array) => Generator<SortStep, void, undefined>> = {
 	bubble: bubbleSort,
 	quick: quickSort,
 	merge: mergeSort,
@@ -31,17 +32,17 @@ const SPEED_CONFIG: Record<SpeedLevel, { delay: number; batch: number }> = {
 export class VisualizerState {
 	// --- Reactive State ---
 	/**
-	 * `array` and `colors` are intentionally plain (non-reactive) fields.
-	 * Individual elements are mutated in-place during each sort step (swap, merge, etc.),
-	 * which would cause Svelte's proxy-based deep reactivity to fire on every mutation —
-	 * far too noisy for a high-frequency animation loop. Instead, the Canvas reads these
-	 * directly and we use the `tick` signal below to tell it when to re-render.
-	 * `$state.raw` is not used because it requires reassignment rather than mutation,
-	 * which would require restructuring the entire step engine.
+	 * `array` and `colors` are plain (non-reactive) `Uint8Array` fields.
+	 * `Uint8Array` is used because bar values (5–104) and color states (0–5) are
+	 * single-byte integers — 8x smaller than `number[]` (float64) and pointer arrays,
+	 * making snapshot copies in the canvas a native `memcpy`. Elements are mutated
+	 * in-place during each sort step; the `tick` signal below notifies the canvas
+	 * when to re-render. Deep reactivity and `$state.raw` are both avoided to prevent
+	 * per-mutation reactivity overhead in the high-frequency sort engine loop.
 	 */
-	array: number[] = [];
-	initialArray: number[] = [];
-	colors: BarState[] = [];
+	array: Uint8Array = new Uint8Array(0);
+	initialArray: Uint8Array = new Uint8Array(0);
+	colors: Uint8Array = new Uint8Array(0);
 	tick = $state(0);
 
 	stats = $state<SortStatistics>({ comparisons: 0, swaps: 0 });
@@ -61,11 +62,12 @@ export class VisualizerState {
 	/**
 	 * Intentionally a plain Map, not SvelteMap. `dirtyIndices` is a private,
 	 * per-frame scratch buffer used to restore bar colours after each step.
-	 * It is never read reactively from a template, so Svelte's reactive Map
-	 * proxy would add overhead with zero benefit.
+	 * Values are encoded color integers (matching the Uint8Array color buffer),
+	 * read directly from `this.colors[index]` — no string encoding needed.
+	 * Never read reactively from a template, so SvelteMap would add overhead with zero benefit.
 	 */
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	private dirtyIndices = new Map<number, BarState>();
+	private dirtyIndices = new Map<number, number>();
 
 	constructor() {
 		this.generateArray();
@@ -74,20 +76,21 @@ export class VisualizerState {
 	// --- Core Actions ---
 	generateArray() {
 		this.pause();
-		const newArray = Array.from({ length: this.size }, () => Math.floor(Math.random() * 100) + 5);
-		this.array = [...newArray];
-		this.initialArray = [...newArray];
+		const arr = new Uint8Array(this.size);
+		for (let i = 0; i < this.size; i++) arr[i] = (Math.random() * 100 + 5) | 0;
+		this.array = arr;
+		this.initialArray = arr.slice();
 		this.resetMetrics();
 	}
 
 	reset() {
 		this.pause();
-		this.array = [...this.initialArray];
+		this.array.set(this.initialArray);
 		this.resetMetrics();
 	}
 
 	private resetMetrics() {
-		this.colors = Array(this.size).fill('default');
+		this.colors = new Uint8Array(this.size); // zero-initialized = BAR_STATE_ID.default (0)
 		this._comparisons = 0;
 		this._swaps = 0;
 		this.stats = { comparisons: 0, swaps: 0 };
@@ -145,7 +148,7 @@ export class VisualizerState {
 		if (!this.dirtyIndices.has(index)) {
 			this.dirtyIndices.set(index, this.colors[index]!);
 		}
-		this.colors[index] = state;
+		this.colors[index] = BAR_STATE_ID[state];
 	}
 
 	// --- The Engine ---
@@ -163,7 +166,7 @@ export class VisualizerState {
 		}
 
 		for (const [index, prevState] of this.dirtyIndices) {
-			if (this.colors[index] !== 'sorted') this.colors[index] = prevState;
+			if (this.colors[index] !== BAR_STATE_ID.sorted) this.colors[index] = prevState;
 		}
 		this.dirtyIndices.clear();
 
@@ -189,7 +192,7 @@ export class VisualizerState {
 				break;
 			case 'sorted':
 				for (const idx of indices) {
-					this.colors[idx] = 'sorted';
+					this.colors[idx] = BAR_STATE_ID.sorted;
 					this.dirtyIndices.delete(idx);
 				}
 				break;

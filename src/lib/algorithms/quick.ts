@@ -1,7 +1,7 @@
 import type { SortStep } from '$types/algorithm';
 
 function* medianOfThree(
-	arr: number[],
+	arr: Uint8Array,
 	low: number,
 	high: number
 ): Generator<SortStep, void, undefined> {
@@ -29,7 +29,7 @@ function* medianOfThree(
 }
 
 function* partition(
-	arr: number[],
+	arr: Uint8Array,
 	low: number,
 	high: number
 ): Generator<SortStep, number, undefined> {
@@ -58,7 +58,7 @@ function* partition(
 }
 
 function* quickSortHelper(
-	arr: number[],
+	arr: Uint8Array,
 	low: number,
 	high: number
 ): Generator<SortStep, void, undefined> {
@@ -88,7 +88,7 @@ function* quickSortHelper(
 	if (low === high) yield { type: 'sorted', indices: [low] };
 }
 
-export function* quickSort(arr: number[]): Generator<SortStep, void, undefined> {
+export function* quickSort(arr: Uint8Array): Generator<SortStep, void, undefined> {
 	if (arr.length <= 1) return;
 	yield* quickSortHelper(arr, 0, arr.length - 1);
 }

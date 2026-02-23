@@ -1,8 +1,8 @@
 import type { SortStep } from '$types/algorithm';
 
 function* merge(
-	arr: number[],
-	buf: number[],
+	arr: Uint8Array,
+	buf: Uint8Array,
 	left: number,
 	mid: number,
 	right: number
@@ -40,8 +40,8 @@ function* merge(
 }
 
 function* mergeSortHelper(
-	arr: number[],
-	buf: number[],
+	arr: Uint8Array,
+	buf: Uint8Array,
 	left: number,
 	right: number
 ): Generator<SortStep, void, undefined> {
@@ -56,7 +56,7 @@ function* mergeSortHelper(
 	yield* merge(arr, buf, left, mid, right);
 }
 
-export function* mergeSort(arr: number[]): Generator<SortStep, void, undefined> {
-	yield* mergeSortHelper(arr, new Array<number>(arr.length), 0, arr.length - 1);
+export function* mergeSort(arr: Uint8Array): Generator<SortStep, void, undefined> {
+	yield* mergeSortHelper(arr, new Uint8Array(arr.length), 0, arr.length - 1);
 	for (let i = 0; i < arr.length; i++) yield { type: 'sorted', indices: [i] };
 }

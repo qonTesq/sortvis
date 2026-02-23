@@ -1,4 +1,5 @@
 import type { BarState } from '$types';
+import { BAR_STATES } from '$types';
 
 export const CONFIG = {
 	MIN_BAR_HEIGHT_OFFSET: 10
@@ -16,7 +17,7 @@ export interface BarLayout {
  * Compute layout parameters from current canvas/array state.
  * Inputs (width, height) are PHYSICAL PIXELS now.
  */
-export function computeLayout(width: number, height: number, array: number[]): BarLayout {
+export function computeLayout(width: number, height: number, array: Uint8Array): BarLayout {
 	const size = array.length;
 
 	let maxValue = 1;
@@ -34,8 +35,8 @@ export function drawAllBars(
 	ctx: CanvasRenderingContext2D,
 	width: number,
 	height: number,
-	array: number[],
-	colors: BarState[],
+	array: Uint8Array,
+	colors: Uint8Array,
 	themeColors: Record<BarState, string>
 ): BarLayout {
 	const layout = computeLayout(width, height, array);
@@ -45,7 +46,8 @@ export function drawAllBars(
 
 	for (let i = 0; i < size; i++) {
 		const value = array[i]!;
-		const color = themeColors[colors[i] || 'default'];
+		const state = BAR_STATES[colors[i]] ?? 'default';
+		const color = themeColors[state];
 
 		batches[color] ??= new Path2D();
 
@@ -72,13 +74,14 @@ export function drawBarsByIndex(
 	ctx: CanvasRenderingContext2D,
 	indices: number[],
 	layout: BarLayout,
-	array: number[],
-	colors: BarState[],
+	array: Uint8Array,
+	colors: Uint8Array,
 	themeColors: Record<BarState, string>
 ) {
 	for (const i of indices) {
 		const value = array[i]!;
-		const color = themeColors[colors[i] || 'default'];
+		const state = BAR_STATES[colors[i]] ?? 'default';
+		const color = themeColors[state];
 
 		const barHeight =
 			((value / layout.maxValue) * (layout.height - CONFIG.MIN_BAR_HEIGHT_OFFSET)) | 0;

@@ -1,6 +1,6 @@
 import type { SortStep } from '$types/algorithm';
 
-export function* insertionSort(arr: number[]): Generator<SortStep, void, undefined> {
+export function* insertionSort(arr: Uint8Array): Generator<SortStep, void, undefined> {
 	yield { type: 'sorted', indices: [0] };
 
 	for (let i = 1; i < arr.length; i++) {

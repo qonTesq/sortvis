@@ -1,6 +1,6 @@
 import type { SortStep } from '$types/algorithm';
 
-export function* bubbleSort(arr: number[]): Generator<SortStep, void, undefined> {
+export function* bubbleSort(arr: Uint8Array): Generator<SortStep, void, undefined> {
 	const n = arr.length;
 	let bound = n - 1;
 
