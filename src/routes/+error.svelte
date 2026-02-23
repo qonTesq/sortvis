@@ -1,7 +1,8 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	$effect(() => {
-		goto('/', { replaceState: true });
+		goto(resolve('/', {}), { replaceState: true });
 	});
 </script>

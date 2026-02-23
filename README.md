@@ -28,11 +28,11 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
    ```bash
    git clone https://github.com/qonTesq/sortvis.git
    ```
-3. Navigate to the project directory:
+2. Navigate to the project directory:
    ```bash
    cd sortvis
    ```
-4. Install dependencies using your preferred package manager (e.g., bun, pnpm, npm):
+3. Install dependencies using your preferred package manager (e.g., bun, pnpm, npm):
    ```bash
    bun install
    ```

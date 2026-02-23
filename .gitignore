@@ -38,6 +38,7 @@ pnpm-lock.yaml
 yarn.lock
 
 # IDEs / Editor
+.zed/
 .idea
 .vscode/*
 !.vscode/settings.json

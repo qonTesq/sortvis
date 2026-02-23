@@ -72,10 +72,18 @@ export class VisualizerState {
 	#speed = $state<SpeedLevel>('med');
 	#algorithmId = $state<AlgorithmId>('bubble');
 
-	get status() { return this.#status; }
-	get size() { return this.#size; }
-	get speed() { return this.#speed; }
-	get algorithmId() { return this.#algorithmId; }
+	get status() {
+		return this.#status;
+	}
+	get size() {
+		return this.#size;
+	}
+	get speed() {
+		return this.#speed;
+	}
+	get algorithmId() {
+		return this.#algorithmId;
+	}
 
 	// --- Internal State ---
 	private generator: Generator<SortStep, void, undefined> | null = null;

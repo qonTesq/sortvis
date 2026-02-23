@@ -8,11 +8,7 @@
 
 <div class="flex h-full w-full items-center justify-between border-b border-border pl-4">
 	<div class="flex items-center">
-		<h1
-			class="flex -translate-y-0.5 items-center text-xl font-bold tracking-tight"
-		>
-			sortvis
-		</h1>
+		<h1 class="flex -translate-y-0.5 items-center text-xl font-bold tracking-tight">sortvis</h1>
 		<Separator orientation="vertical" class="mx-4 h-5" />
 	</div>
 

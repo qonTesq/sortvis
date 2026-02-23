@@ -45,7 +45,7 @@
 				</Button>
 			{/snippet}
 		</Popover.Trigger>
-		<Popover.Content class="w-[220px] p-0" align="center">
+		<Popover.Content class="w-55 p-0" align="center">
 			<Command.Root>
 				<Command.Input placeholder="Search algorithm..." class="h-9" />
 				<Command.List>

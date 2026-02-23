@@ -60,7 +60,7 @@
 		<Separator orientation="vertical" class="mx-6 hidden h-6 shrink-0 lg:order-2 lg:block" />
 
 		<div
-			class="col-3 row-2 flex w-[220px] items-center lg:order-3 lg:col-[unset] lg:row-[unset] lg:shrink-0"
+			class="col-3 row-2 flex w-55 items-center lg:order-3 lg:col-[unset] lg:row-[unset] lg:shrink-0"
 		>
 			<AlgoSelector />
 		</div>
