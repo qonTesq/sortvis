@@ -49,6 +49,7 @@ yarn.lock
 .agents
 skills-lock.json
 AGENTS.md
+GEMINI.md
 *.suo
 *.ntvs*
 *.njsproj

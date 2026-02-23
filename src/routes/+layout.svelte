@@ -1,10 +1,60 @@
 <script lang="ts">
 	import './layout.css';
 	import { ModeWatcher } from 'mode-watcher';
+	import { onMount } from 'svelte';
+	import { pwaInfo } from 'virtual:pwa-info';
 	import type { Snippet } from 'svelte';
 
 	let { children }: { children: Snippet } = $props();
+
+	onMount(async () => {
+		if (pwaInfo) {
+			const { registerSW } = await import('virtual:pwa-register');
+			registerSW({ immediate: true });
+		}
+	});
 </script>
+
+<svelte:head>
+	<title>Sortvis - Sorting Algorithm Visualizer</title>
+	<meta
+		name="description"
+		content="Visualize how various sorting algorithms manipulate data structures."
+	/>
+	<meta
+		name="keywords"
+		content="sorting algorithms, algorithm visualizer, bubble sort, quick sort, merge sort, heap sort, computer science, education, data structures"
+	/>
+	<meta name="author" content="qonTesq" />
+	<link rel="canonical" href="https://sortvis.pages.dev/" />
+	<link rel="icon" href="/favicon.ico" sizes="any" />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+	<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+	<meta name="theme-color" content="#252525" media="(prefers-color-scheme: dark)" />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://sortvis.pages.dev/" />
+	<meta property="og:title" content="Sortvis - Sorting Algorithm Visualizer" />
+	<meta
+		property="og:description"
+		content="Visualize how various sorting algorithms manipulate data structures."
+	/>
+	<meta property="og:image" content="https://sortvis.pages.dev/og-image.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content="https://sortvis.pages.dev/" />
+	<meta property="twitter:title" content="Sortvis - Sorting Algorithm Visualizer" />
+	<meta
+		property="twitter:description"
+		content="Visualize how various sorting algorithms manipulate data structures."
+	/>
+	<meta property="twitter:image" content="https://sortvis.pages.dev/og-image.png" />
+</svelte:head>
 
 <ModeWatcher />
 <div class="flex min-h-dvh flex-col bg-background">

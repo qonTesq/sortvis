@@ -50,7 +50,7 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
 Start the development server:
 
 ```bash
-bun dev
+bun run dev
 ```
 
 Open your browser and navigate to `http://localhost:5173`.
