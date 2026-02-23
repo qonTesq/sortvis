@@ -28,6 +28,7 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
    ```bash
    git clone https://github.com/qonTesq/sortvis.git
    ```
+
 2. Navigate to the project directory:
    ```bash
    cd sortvis
@@ -86,7 +87,11 @@ src/
 │   ├── algorithms/    # Sorting logic implementations (Bubble, Quick, Merge, etc.)
 │   ├── components/    # Svelte UI components (Canvas renderer, Controls, Header, Footer)
 │   ├── config/        # Algorithm configurations & metadata
-│   ├── state/         # Centralized visualizer engine and global states
+│   ├── store/         # Centralized visualizer engine and global states
 │   └── types/         # TypeScript interfaces and discriminator types
 └── routes/            # Main entry point and page layouts
 ```
+
+---
+
+Built using [Svelte](https://svelte.dev/), [SvelteKit](https://kit.svelte.dev/), [shadcn-svelte](https://www.shadcn-svelte.com/), and [Vite](https://vite.dev/).
