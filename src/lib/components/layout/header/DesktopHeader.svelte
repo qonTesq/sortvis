@@ -11,7 +11,6 @@
 	<div class="flex items-center">
 		<h1
 			class="flex -translate-y-0.5 items-center text-xl font-bold tracking-tight"
-			aria-label="Sortvis Home"
 		>
 			sortvis
 		</h1>

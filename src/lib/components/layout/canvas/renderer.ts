@@ -19,7 +19,8 @@ export interface BarLayout {
 export function computeLayout(width: number, height: number, array: number[]): BarLayout {
 	const size = array.length;
 
-	const maxValue = array.length ? Math.max(...array) : 1;
+	let maxValue = 1;
+	for (let i = 0; i < array.length; i++) if (array[i]! > maxValue) maxValue = array[i]!;
 
 	const step = width / size;
 	// 1 physical pixel gap when bars are wide enough (> 6px physical)

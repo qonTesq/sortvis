@@ -1,11 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import { visualizer } from '$state';
 	import { isMobile } from '$state/media.svelte';
 	import { Canvas, Header, Footer, Stats, Legend } from '$components/layout';
-
-	onMount(() => visualizer.generateArray());
 </script>
 
 <div class="flex h-dvh w-full flex-col overflow-hidden bg-background font-sans text-foreground">

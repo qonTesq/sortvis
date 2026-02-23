@@ -157,11 +157,9 @@
 </script>
 
 <div class="relative h-full min-h-0 w-full flex-1 overflow-hidden">
-	<!-- svelte-ignore a11y_no_interactive_element_to_noninteractive_role -->
 	<canvas
 		{@attach render}
-		class="block h-full w-full will-change-transform"
-		role="img"
+		class="block h-full w-full"
 		aria-label="{visualizer.algorithmId} sorting visualization"
 	></canvas>
 </div>

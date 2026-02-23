@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { visualizer } from '$state';
-	import type { SpeedLevel } from '$types';
 	import { Button } from '$components/ui/button';
 	import { Slider } from '$components/ui/slider';
-	import { RotateCcw, Play, Pause, Shuffle, Sun, Moon } from '@lucide/svelte';
+	import { Sun, Moon } from '@lucide/svelte';
 	import AlgoSelector from './AlgoSelector.svelte';
-	import { Stats } from '$components/layout';
+	import MobileStats from '$components/layout/stats/MobileStats.svelte';
+	import PlaybackControls from './PlaybackControls.svelte';
 	import { toggleMode } from 'mode-watcher';
+	import { speedLevels } from '$config/speeds';
 
-	const speedLevels: SpeedLevel[] = ['snail', 'slow', 'med', 'fast', 'rapid', 'flash'];
 	const currentSpeedIndex = $derived(speedLevels.indexOf(visualizer.speed));
 </script>
 
@@ -59,56 +59,11 @@
 	<!-- Bottom: Controls -->
 	<div class="flex w-full items-center justify-between gap-3">
 		<!-- Left: Info -->
-		<Stats />
+		<MobileStats />
 
 		<!-- Center: Playback -->
 		<div class="flex items-center gap-3">
-			<Button
-				variant="outline"
-				size="icon"
-				class="h-10 w-10 rounded-full text-muted-foreground hover:text-foreground"
-				onclick={() => visualizer.reset()}
-				disabled={visualizer.status === 'playing'}
-				aria-label="Reset array"
-			>
-				<RotateCcw class="h-4 w-4" />
-				<span class="sr-only">Reset array</span>
-			</Button>
-
-			<Button
-				size="icon"
-				class="relative h-12 w-12 rounded-xl bg-foreground text-background hover:bg-foreground/90"
-				onclick={() => (visualizer.status === 'playing' ? visualizer.pause() : visualizer.play())}
-				aria-label={visualizer.status === 'playing' ? 'Pause animation' : 'Play animation'}
-			>
-				<Pause
-					class="h-5 w-5 transition-all! {visualizer.status === 'playing'
-						? 'scale-100 opacity-100'
-						: 'scale-75 opacity-0'}"
-					fill="currentColor"
-				/>
-				<Play
-					class="absolute h-5 w-5 transition-all! {visualizer.status === 'playing'
-						? 'scale-75 opacity-0'
-						: 'scale-100 opacity-100'}"
-					fill="currentColor"
-				/>
-				<span class="sr-only"
-					>{visualizer.status === 'playing' ? 'Pause animation' : 'Play animation'}</span
-				>
-			</Button>
-
-			<Button
-				variant="outline"
-				size="icon"
-				class="h-10 w-10 rounded-full text-muted-foreground hover:text-foreground"
-				onclick={() => visualizer.generateArray()}
-				disabled={visualizer.status === 'playing'}
-				aria-label="Shuffle array"
-			>
-				<Shuffle class="h-4 w-4" />
-				<span class="sr-only">Shuffle array</span>
-			</Button>
+			<PlaybackControls />
 		</div>
 
 		<!-- Right: Theme -->
@@ -125,7 +80,6 @@
 			<Moon
 				class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0!"
 			/>
-			<span class="sr-only">Toggle theme</span>
 		</Button>
 	</div>
 </div>

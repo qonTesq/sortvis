@@ -30,7 +30,15 @@ const SPEED_CONFIG: Record<SpeedLevel, { delay: number; batch: number }> = {
 
 export class VisualizerState {
 	// --- Reactive State ---
-	// We use `tick` to signal updates to the UI (Canvas).
+	/**
+	 * `array` and `colors` are intentionally plain (non-reactive) fields.
+	 * Individual elements are mutated in-place during each sort step (swap, merge, etc.),
+	 * which would cause Svelte's proxy-based deep reactivity to fire on every mutation —
+	 * far too noisy for a high-frequency animation loop. Instead, the Canvas reads these
+	 * directly and we use the `tick` signal below to tell it when to re-render.
+	 * `$state.raw` is not used because it requires reassignment rather than mutation,
+	 * which would require restructuring the entire step engine.
+	 */
 	array: number[] = [];
 	initialArray: number[] = [];
 	colors: BarState[] = [];
@@ -50,6 +58,13 @@ export class VisualizerState {
 	// --- Internal State ---
 	private generator: Generator<SortStep, void, undefined> | null = null;
 	private loopTimeoutId: ReturnType<typeof setTimeout> | null = null;
+	/**
+	 * Intentionally a plain Map, not SvelteMap. `dirtyIndices` is a private,
+	 * per-frame scratch buffer used to restore bar colours after each step.
+	 * It is never read reactively from a template, so Svelte's reactive Map
+	 * proxy would add overhead with zero benefit.
+	 */
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	private dirtyIndices = new Map<number, BarState>();
 
 	constructor() {
@@ -199,7 +214,6 @@ export class VisualizerState {
 			// Sync internal counters to reactive $state once per batch (not once per step)
 			this.stats = { comparisons: this._comparisons, swaps: this._swaps };
 			this.tick++;
-			if (this.tick > 1_000_000_000) this.tick = 0;
 			this.loopTimeoutId = setTimeout(() => this.runLoop(), delay);
 		}
 	}

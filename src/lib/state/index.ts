@@ -1,1 +1,1 @@
-export { visualizer, VisualizerState } from './visualizer.svelte';
+export { visualizer } from './visualizer.svelte';
