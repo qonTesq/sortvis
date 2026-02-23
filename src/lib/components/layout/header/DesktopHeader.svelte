@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
+	import { visualizer } from '$store';
 	import { Button } from '$components/ui/button';
 	import { Separator } from '$components/ui/separator';
 	import { Sun, Moon } from '@lucide/svelte';
@@ -7,25 +7,21 @@
 </script>
 
 <div class="flex h-full w-full items-center justify-between border-b border-border pl-4">
-	<!-- Left: Logo & Description -->
 	<div class="flex items-center">
 		<h1
 			class="flex -translate-y-0.5 items-center text-xl font-bold tracking-tight"
 		>
 			sortvis
 		</h1>
-		<!-- Vertical Separator -->
 		<Separator orientation="vertical" class="mx-4 h-5" />
 	</div>
 
-	<!-- Center: Description -->
 	<div class="flex flex-1 items-center overflow-hidden">
 		<p class="truncate text-xs text-muted-foreground">
 			{visualizer.currentAlgorithmMetadata.description}
 		</p>
 	</div>
 
-	<!-- Right: Theme Toggle -->
 	<Button
 		onclick={toggleMode}
 		variant="outline"

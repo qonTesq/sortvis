@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
-	import { isMobile } from '$state/media.svelte';
+	import { visualizer, isMobile } from '$store';
 	import { Canvas, Header, Footer, Stats, Legend } from '$components/layout';
 </script>
 

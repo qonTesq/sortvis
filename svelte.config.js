@@ -22,9 +22,8 @@ const config = {
 			$components: 'src/lib/components',
 			$utils: 'src/lib/utils',
 			$types: 'src/lib/types',
-			$state: 'src/lib/state',
+			$store: 'src/lib/store',
 			$algorithms: 'src/lib/algorithms',
-			$services: 'src/lib/services',
 			$config: 'src/lib/config'
 		}
 	}

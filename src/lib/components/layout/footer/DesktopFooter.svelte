@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
+	import { visualizer } from '$store';
 	import { Slider } from '$components/ui/slider';
 	import { Separator } from '$components/ui/separator';
 	import AlgoSelector from './AlgoSelector.svelte';

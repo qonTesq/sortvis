@@ -1,18 +1,20 @@
-<script lang="ts">
-	import { visualizer } from '$state';
-	import { isMobile } from '$state/media.svelte';
-	import * as Popover from '$components/ui/popover/index.js';
-	import * as Command from '$components/ui/command/index.js';
-	import * as Drawer from '$components/ui/drawer/index.js';
-	import { Button } from '$components/ui/button/index.js';
-	import { Check, ChevronsUpDown } from '@lucide/svelte';
-	import { cn } from '$lib/utils.js';
+<script module>
 	import { algorithmMetadata } from '$config/algorithms';
 
 	const algorithms = algorithmMetadata.map((a) => ({
 		value: a.id,
 		label: a.name.replace(' Sort', '')
 	}));
+</script>
+
+<script lang="ts">
+	import { visualizer, isMobile } from '$store';
+	import * as Popover from '$components/ui/popover/index.js';
+	import * as Command from '$components/ui/command/index.js';
+	import * as Drawer from '$components/ui/drawer/index.js';
+	import { Button } from '$components/ui/button/index.js';
+	import { Check, ChevronsUpDown } from '@lucide/svelte';
+	import { cn } from '$utils';
 
 	let open = $state(false);
 

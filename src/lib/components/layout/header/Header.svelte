@@ -2,7 +2,7 @@
 	import Desktop from './DesktopHeader.svelte';
 	import Mobile from './MobileHeader.svelte';
 
-	import { isMobile } from '$state/media.svelte';
+	import { isMobile } from '$store';
 </script>
 
 <header class="z-20 h-14 w-full">

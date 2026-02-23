@@ -1,10 +1,12 @@
-<script lang="ts">
-	import { visualizer } from '$state';
-
+<script module>
 	const ALGO_LABEL: Record<string, string> = {
 		quick: 'Pivot',
 		merge: 'Merge'
 	};
+</script>
+
+<script lang="ts">
+	import { visualizer } from '$store';
 
 	let specialLabel = $derived(ALGO_LABEL[visualizer.algorithmId]);
 </script>

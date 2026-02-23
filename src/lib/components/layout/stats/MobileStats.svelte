@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
+	import { visualizer } from '$store';
 	import { Button, buttonVariants } from '$components/ui/button';
 	import * as Sheet from '$components/ui/sheet';
 	import * as Card from '$components/ui/card';

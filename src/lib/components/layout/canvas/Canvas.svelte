@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
+	import { visualizer } from '$store';
 	import type { BarState } from '$types';
 	import { drawAllBars, drawBarsByIndex, type BarLayout } from './renderer';
 

@@ -1,4 +1,4 @@
-import type { SortStep, SortStatistics, BarState, SpeedLevel } from '$types';
+import type { AlgorithmId, SortStep, SortStatistics, BarState, SpeedLevel } from '$types';
 import { BAR_STATE_ID } from '$types';
 import {
 	bubbleSort,
@@ -10,7 +10,20 @@ import {
 } from '$lib/algorithms';
 import { algorithmMetadata } from '$config/algorithms';
 
-const ALGORITHMS: Record<string, (arr: Uint8Array) => Generator<SortStep, void, undefined>> = {
+const VALID_ALGORITHM_IDS = new Set<AlgorithmId>([
+	'bubble',
+	'quick',
+	'merge',
+	'heap',
+	'insertion',
+	'selection'
+]);
+
+function isAlgorithmId(id: string): id is AlgorithmId {
+	return VALID_ALGORITHM_IDS.has(id as AlgorithmId);
+}
+
+const ALGORITHMS: Record<AlgorithmId, (arr: Uint8Array) => Generator<SortStep, void, undefined>> = {
 	bubble: bubbleSort,
 	quick: quickSort,
 	merge: mergeSort,
@@ -28,6 +41,9 @@ const SPEED_CONFIG: Record<SpeedLevel, { delay: number; batch: number }> = {
 	rapid: { delay: 0, batch: 5 },
 	flash: { delay: 0, batch: 100 }
 };
+
+const SIZE_MIN = 10;
+const SIZE_MAX = 512;
 
 export class VisualizerState {
 	// --- Reactive State ---
@@ -49,12 +65,17 @@ export class VisualizerState {
 	// Internal non-reactive counters — mutated in step(), synced to $state once per batch
 	private _comparisons = 0;
 	private _swaps = 0;
-	status = $state<'idle' | 'playing' | 'paused' | 'finished'>('idle');
 
-	// Settings
-	size = $state(64);
-	speed = $state<SpeedLevel>('med'); // Default to 'med'
-	algorithmId = $state<string>('bubble');
+	// Private backing fields for controlled settings
+	#status = $state<'idle' | 'playing' | 'paused' | 'finished'>('idle');
+	#size = $state(64);
+	#speed = $state<SpeedLevel>('med');
+	#algorithmId = $state<AlgorithmId>('bubble');
+
+	get status() { return this.#status; }
+	get size() { return this.#size; }
+	get speed() { return this.#speed; }
+	get algorithmId() { return this.#algorithmId; }
 
 	// --- Internal State ---
 	private generator: Generator<SortStep, void, undefined> | null = null;
@@ -76,8 +97,8 @@ export class VisualizerState {
 	// --- Core Actions ---
 	generateArray() {
 		this.pause();
-		const arr = new Uint8Array(this.size);
-		for (let i = 0; i < this.size; i++) arr[i] = (Math.random() * 100 + 5) | 0;
+		const arr = new Uint8Array(this.#size);
+		for (let i = 0; i < this.#size; i++) arr[i] = (Math.random() * 100 + 5) | 0;
 		this.array = arr;
 		this.initialArray = arr.slice();
 		this.resetMetrics();
@@ -90,11 +111,11 @@ export class VisualizerState {
 	}
 
 	private resetMetrics() {
-		this.colors = new Uint8Array(this.size); // zero-initialized = BAR_STATE_ID.default (0)
+		this.colors = new Uint8Array(this.#size); // zero-initialized = BAR_STATE_ID.default (0)
 		this._comparisons = 0;
 		this._swaps = 0;
 		this.stats = { comparisons: 0, swaps: 0 };
-		this.status = 'idle';
+		this.#status = 'idle';
 		this.generator = null;
 		this.dirtyIndices.clear();
 		this.tick++;
@@ -102,41 +123,42 @@ export class VisualizerState {
 
 	// --- Settings Modifiers ---
 	setAlgorithm(id: string) {
-		if (this.algorithmId === id) return;
-		this.algorithmId = id;
+		if (!isAlgorithmId(id)) throw new Error(`Unknown algorithm: "${id}"`);
+		if (this.#algorithmId === id) return;
+		this.#algorithmId = id;
 		this.reset();
 	}
 
 	setSize(newSize: number) {
-		if (this.size === newSize) return;
-		this.size = newSize;
+		const clamped = Math.min(SIZE_MAX, Math.max(SIZE_MIN, Math.round(newSize)));
+		if (this.#size === clamped) return;
+		this.#size = clamped;
 		this.generateArray();
 	}
 
 	setSpeed(newSpeed: SpeedLevel) {
-		this.speed = newSpeed;
+		this.#speed = newSpeed;
 	}
 
 	// --- Playback Controls ---
 	play() {
-		if (this.status === 'playing') return;
+		if (this.#status === 'playing') return;
 
-		if (this.status === 'finished') {
+		if (this.#status === 'finished') {
 			this.resetMetrics();
 		}
 
 		if (!this.generator) {
-			const algo = ALGORITHMS[this.algorithmId];
-			if (!algo) throw new Error(`Algorithm ${this.algorithmId} not found`);
+			const algo = ALGORITHMS[this.#algorithmId];
 			this.generator = algo(this.array);
 		}
 
-		this.status = 'playing';
+		this.#status = 'playing';
 		this.runLoop();
 	}
 
 	pause() {
-		this.status = 'paused';
+		this.#status = 'paused';
 		if (this.loopTimeoutId !== null) {
 			clearTimeout(this.loopTimeoutId);
 			this.loopTimeoutId = null;
@@ -158,7 +180,7 @@ export class VisualizerState {
 		const result = this.generator.next();
 
 		if (result.done) {
-			this.status = 'finished';
+			this.#status = 'finished';
 			this.stats = { comparisons: this._comparisons, swaps: this._swaps };
 			this.dirtyIndices.clear();
 			this.tick++;
@@ -207,22 +229,23 @@ export class VisualizerState {
 	}
 
 	private runLoop() {
-		if (this.status !== 'playing') return;
+		if (this.#status !== 'playing') return;
 
 		// Grab the current speed config based on the discrete setting
-		const { delay, batch } = SPEED_CONFIG[this.speed];
+		const { delay, batch } = SPEED_CONFIG[this.#speed];
 		for (let i = 0; i < batch && this.step(); i++);
 
-		if (this.status === 'playing') {
+		if (this.#status === 'playing') {
 			// Sync internal counters to reactive $state once per batch (not once per step)
 			this.stats = { comparisons: this._comparisons, swaps: this._swaps };
 			this.tick++;
 			this.loopTimeoutId = setTimeout(() => this.runLoop(), delay);
 		}
 	}
+
 	// --- Derived State ---
 	get currentAlgorithmMetadata() {
-		return algorithmMetadata.find((a) => a.id === this.algorithmId) || algorithmMetadata[0]!;
+		return algorithmMetadata.find((a) => a.id === this.#algorithmId) ?? algorithmMetadata[0]!;
 	}
 }
 

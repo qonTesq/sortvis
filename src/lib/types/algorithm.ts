@@ -1,7 +1,7 @@
 /**
- * Type of operation performed during sorting
+ * Valid algorithm identifiers — known at compile time
  */
-export type SortStepType = 'compare' | 'swap' | 'sorted' | 'pivot' | 'merge';
+export type AlgorithmId = 'bubble' | 'quick' | 'merge' | 'heap' | 'insertion' | 'selection';
 
 /**
  * Single step in the sorting visualization
@@ -29,7 +29,7 @@ export interface SortStatistics {
  */
 export interface AlgorithmInfo {
 	/** Unique identifier (e.g., 'bubble', 'quick') */
-	id: string;
+	id: AlgorithmId;
 	/** Display name (e.g., 'Bubble Sort') */
 	name: string;
 	/** Time complexity (best case) */

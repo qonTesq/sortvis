@@ -1,7 +1,7 @@
 import type { BarState } from '$types';
 import { BAR_STATES } from '$types';
 
-export const CONFIG = {
+const CONFIG = {
 	MIN_BAR_HEIGHT_OFFSET: 10
 };
 
@@ -46,7 +46,7 @@ export function drawAllBars(
 
 	for (let i = 0; i < size; i++) {
 		const value = array[i]!;
-		const state = BAR_STATES[colors[i]] ?? 'default';
+		const state = BAR_STATES[colors[i]!] ?? 'default';
 		const color = themeColors[state];
 
 		batches[color] ??= new Path2D();
@@ -77,10 +77,10 @@ export function drawBarsByIndex(
 	array: Uint8Array,
 	colors: Uint8Array,
 	themeColors: Record<BarState, string>
-) {
+): void {
 	for (const i of indices) {
 		const value = array[i]!;
-		const state = BAR_STATES[colors[i]] ?? 'default';
+		const state = BAR_STATES[colors[i]!] ?? 'default';
 		const color = themeColors[state];
 
 		const barHeight =

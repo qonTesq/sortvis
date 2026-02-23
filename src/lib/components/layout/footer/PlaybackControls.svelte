@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
+	import { visualizer } from '$store';
 	import { Button } from '$components/ui/button';
 	import { RotateCcw, Play, Pause, Shuffle } from '@lucide/svelte';
 </script>

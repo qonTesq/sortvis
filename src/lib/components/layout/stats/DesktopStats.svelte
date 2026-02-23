@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { visualizer } from '$state';
+	import { visualizer } from '$store';
 	import StabilityBadge from './StabilityBadge.svelte';
 </script>
 
