@@ -10,7 +10,7 @@
 		<Legend />
 
 		<div
-			class="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-[0.03] select-none dark:opacity-5"
+			class="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-10 select-none dark:opacity-5"
 			aria-hidden="true"
 		>
 			<h2
