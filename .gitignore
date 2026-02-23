@@ -45,11 +45,12 @@ yarn.lock
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.agent
+.agents
+skills-lock.json
+AGENTS.md
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.agent
-.agents
-skills-lock.json
