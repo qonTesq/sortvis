@@ -30,9 +30,6 @@
 	<link rel="icon" href="/favicon.ico" sizes="any" />
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
-	<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-	<meta name="theme-color" content="#252525" media="(prefers-color-scheme: dark)" />
-
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://sortvis.pages.dev/" />
@@ -56,7 +53,7 @@
 	<meta property="twitter:image" content="https://sortvis.pages.dev/og-image.png" />
 </svelte:head>
 
-<ModeWatcher />
+<ModeWatcher defaultMode="dark" themeColors={{ light: 'oklch(1 0 0)', dark: 'oklch(0.145 0 0)' }} />
 <div class="flex min-h-dvh flex-col bg-background">
 	{@render children()}
 </div>
