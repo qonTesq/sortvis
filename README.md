@@ -2,6 +2,8 @@
 
 Sortvis is an interactive logic visualization tool. It provides an engaging and educational approach to understanding how various sorting algorithms manipulate data structures.
 
+![Application Homepage](assets/dark.png)
+
 ## Playground
 
 https://sortvis.pages.dev/
