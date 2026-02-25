@@ -17,6 +17,13 @@
 
 <svelte:head>
 	<title>Sortvis - Sorting Algorithm Visualizer</title>
+
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+	<link rel="manifest" href="/manifest.webmanifest" />
+	<link rel="canonical" href="https://sortvis.pages.dev/" />
+
+	<meta name="author" content="qonTesq" />
 	<meta
 		name="description"
 		content="Visualize how various sorting algorithms manipulate data structures."
@@ -25,11 +32,7 @@
 		name="keywords"
 		content="sorting algorithms, algorithm visualizer, bubble sort, quick sort, merge sort, heap sort, computer science, education, data structures"
 	/>
-	<meta name="author" content="qonTesq" />
-	<link rel="canonical" href="https://sortvis.pages.dev/" />
-	<link rel="icon" href="/favicon.ico" sizes="any" />
-	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-	<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://sortvis.pages.dev/" />
