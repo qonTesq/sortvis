@@ -73,7 +73,7 @@
 			{#snippet child({ props })}
 				<Button
 					variant="outline"
-					class="w-full justify-between"
+					class="h-11 w-full justify-between"
 					aria-label="Select algorithm"
 					{...props}
 				>
@@ -90,10 +90,14 @@
 						<Command.Empty>No algorithm found.</Command.Empty>
 						<Command.Group>
 							{#each algorithms as algo (algo.value)}
-								<Command.Item value={algo.value} onSelect={() => handleSelect(algo.value)}>
+								<Command.Item
+									class="h-11"
+									value={algo.value}
+									onSelect={() => handleSelect(algo.value)}
+								>
 									<Check
 										class={cn(
-											'mr-2 h-4 w-4',
+											'size-4.5',
 											visualizer.algorithmId !== algo.value && 'text-transparent'
 										)}
 									/>

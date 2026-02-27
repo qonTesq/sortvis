@@ -12,9 +12,7 @@
 	const currentSpeedIndex = $derived(speedLevels.indexOf(visualizer.speed));
 </script>
 
-<div
-	class="flex h-auto w-full flex-col gap-4 p-6 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
->
+<div class="flex h-auto w-full flex-col gap-4 p-4">
 	<div
 		class="flex w-full flex-col items-center gap-4 text-xs font-bold tracking-widest text-muted-foreground uppercase"
 	>
@@ -63,14 +61,12 @@
 			onclick={toggleMode}
 			variant="outline"
 			size="icon"
-			class="h-9 w-9 text-muted-foreground"
+			class="size-11 text-muted-foreground"
 			aria-label="Toggle theme"
 		>
-			<Sun
-				class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90!"
-			/>
+			<Sun class="size-4.5 scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90!" />
 			<Moon
-				class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0!"
+				class="absolute size-4.5 scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0!"
 			/>
 		</Button>
 	</div>
