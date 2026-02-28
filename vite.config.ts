@@ -16,8 +16,8 @@ export default defineConfig({
 				name: 'Sortvis',
 				short_name: 'Sortvis',
 				description: 'Interactive sorting algorithm visualizer',
-				theme_color: '#0a0a0a',
-				background_color: '#0a0a0a',
+				theme_color: '#101010',
+				background_color: '#101010',
 				display: 'standalone',
 				icons: [
 					{ src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },

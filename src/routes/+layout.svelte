@@ -60,7 +60,7 @@
 	<meta property="twitter:image" content="https://sortvis.pages.dev/og-image.png" />
 </svelte:head>
 
-<ModeWatcher themeColors={{ light: 'oklch(1 0 0)', dark: 'oklch(0.145 0 0)' }} />
+<ModeWatcher themeColors={{ light: 'oklch(1 0 0)', dark: 'oklch(0.173 0 0)' }} />
 <div class="flex min-h-dvh flex-col bg-background">
 	{@render children()}
 </div>
