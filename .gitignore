@@ -38,14 +38,11 @@ pnpm-lock.yaml
 yarn.lock
 
 # IDEs / Editor
-.zed/
+.zed/*
+!.zed/settings.json
 .idea
 .cursor/
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 .agent
 .agents
 skills-lock.json

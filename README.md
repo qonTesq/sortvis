@@ -26,6 +26,7 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/qonTesq/sortvis.git
    ```
@@ -35,16 +36,19 @@ Make sure you have [Bun](https://bun.sh/) **or** [Node.js](https://nodejs.org/) 
    cd sortvis
    ```
 3. Install dependencies using your preferred package manager (e.g., bun, pnpm, npm):
+
    ```bash
    bun install
    ```
+
    ```bash
    pnpm install
    ```
+
    ```bash
    npm install
    ```
-   
+
    _Note: This project utilizes a `bun.lock` file, meaning [Bun](https://bun.sh) is the natively used package manager._
 
 ### Start

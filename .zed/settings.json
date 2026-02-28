@@ -1,0 +1,13 @@
+{
+	"code_actions_on_format": {
+		"source.fixAll.eslint": true
+	},
+	"languages": {
+		"CSS": {
+			"language_servers": ["tailwindcss-language-server"]
+		},
+		"Svelte": {
+			"formatter": "language_server"
+		}
+	}
+}
