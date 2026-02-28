@@ -13,14 +13,18 @@
 			registerSW({ immediate: true });
 		}
 	});
+
+	const webManifest = $derived(pwaInfo ? pwaInfo.webManifest.linkTag : '');
 </script>
 
 <svelte:head>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html webManifest}
+
 	<title>Sortvis - Sorting Algorithm Visualizer</title>
 
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
-	<link rel="manifest" href="/manifest.webmanifest" />
 	<link rel="canonical" href="https://sortvis.pages.dev/" />
 
 	<meta name="author" content="qonTesq" />
